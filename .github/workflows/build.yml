@@ -44,7 +44,10 @@ jobs:
           git_sha: "${{ github.sha }}"
 
       - name: leanpkg build
-        run: leanpkg build | python scripts/detect_errors.py
+        id: build
+        run: |
+          leanpkg build | python scripts/detect_errors.py
+          echo ::set-output name=exit_code::$?
 
       - name: configure git setup
         if: always()
@@ -91,18 +94,20 @@ jobs:
           path: ..
 
       - name: tests
+        if: steps.build.outputs.exit_code == 0
         run: |
           set -o pipefail
           lean --make docs archive roadmap test | cat
 
       - name: lint
+        if: steps.build.outputs.exit_code == 0
         run: |
           ./scripts/mk_all.sh
           lean --run scripts/lint_mathlib.lean
           mv nolints.txt scripts/nolints.txt
           ./scripts/rm_all.sh
           git diff
-          
+
       - name: update nolints.txt
         if: github.repository == 'leanprover-community/mathlib' && github.event_name == 'push' && github.ref == 'refs/heads/master'
         run:
@@ -111,6 +116,7 @@ jobs:
           DEPLOY_NIGHTLY_GITHUB_TOKEN: ${{ secrets.DEPLOY_NIGHTLY_GITHUB_TOKEN }}
 
       - name: leanchecker
+        if: steps.build.outputs.exit_code == 0
         run: |
           lean --recursive --export=mathlib.txt src/
           leanchecker mathlib.txt
@@ -123,5 +129,3 @@ jobs:
           github_repo: ${{ github.repository }}
           github_event: ${{ github.event_name }}
           github_ref: ${{ github.ref }}
-
-
