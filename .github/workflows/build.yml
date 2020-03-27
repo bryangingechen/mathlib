@@ -96,7 +96,7 @@ jobs:
       - name: tests
         if: always()
         run: |
-          echo "${{ steps.build.outputs.built == true }}"
+          echo "${{ steps.build.outputs.built == 'true' }}"
           set -o pipefail
           lean --make docs archive roadmap test | cat
 
