@@ -116,7 +116,6 @@ jobs:
           DEPLOY_NIGHTLY_GITHUB_TOKEN: ${{ secrets.DEPLOY_NIGHTLY_GITHUB_TOKEN }}
 
       - name: leanchecker
-        if: steps.build.outputs.exit_code == 0
         run: |
           lean --recursive --export=mathlib.txt src/
           leanchecker mathlib.txt
