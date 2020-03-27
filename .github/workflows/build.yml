@@ -95,6 +95,7 @@ jobs:
           path: ..
 
       - name: tests
+        # not sure why `success() ||` is needed here and in step `lint`...
         if: success() || steps.build.outputs.status == 'built'
         run: |
           set -o pipefail

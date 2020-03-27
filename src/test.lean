@@ -1,1 +1,1 @@
-example : true := trivial
+example : true := trivia
