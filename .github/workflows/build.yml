@@ -95,13 +95,13 @@ jobs:
           path: ..
 
       - name: tests
-        if: steps.build.outputs.status == 'built'
+        if: success() || steps.build.outputs.status == 'built'
         run: |
           set -o pipefail
           lean --make docs archive roadmap test | cat
 
       - name: lint
-        if: steps.build.outputs.status == 'built'
+        if: success() || steps.build.outputs.status == 'built'
         run: |
           ./scripts/mk_all.sh
           lean --run scripts/lint_mathlib.lean
