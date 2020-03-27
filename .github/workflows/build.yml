@@ -47,7 +47,7 @@ jobs:
         id: build
         run: |
           leanpkg build | python scripts/detect_errors.py
-          echo "::set-output name=exit_code::$?"
+          echo "::set-output name=built::true"
 
       - name: configure git setup
         if: always()
@@ -96,12 +96,12 @@ jobs:
       - name: tests
         if: always()
         run: |
-          echo "${{ steps.build.outputs.exit_code }}"
+          echo "${{ steps.build.outputs.built == true }}"
           set -o pipefail
           lean --make docs archive roadmap test | cat
 
       - name: lint
-        if: success() || ((steps.build.outputs.exit_code == 1))
+        if: success() || ((steps.build.outputs.built))
         run: |
           ./scripts/mk_all.sh
           lean --run scripts/lint_mathlib.lean
