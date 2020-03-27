@@ -94,13 +94,13 @@ jobs:
           path: ..
 
       - name: tests
-        if: success() || (failure() && (steps.build.outputs.exit_code == 0))
+        if: success() || ((steps.build.outputs.exit_code == 0))
         run: |
           set -o pipefail
           lean --make docs archive roadmap test | cat
 
       - name: lint
-        if: success() || (failure() && (steps.build.outputs.exit_code == 0))
+        if: success() || ((steps.build.outputs.exit_code == 0))
         run: |
           ./scripts/mk_all.sh
           lean --run scripts/lint_mathlib.lean
