@@ -94,8 +94,9 @@ jobs:
           path: ..
 
       - name: tests
-        if: success() || ((steps.build.outputs.exit_code == 1))
+        if: always()
         run: |
+          echo "${{ steps.build.outputs.exit_code }}"
           set -o pipefail
           lean --make docs archive roadmap test | cat
 
