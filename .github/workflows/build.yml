@@ -88,11 +88,11 @@ jobs:
         run: |
           git_hash="$(git log -1 --pretty=format:%h)"
           echo "::set-output name=artifact_name::precompiled-mathlib-$short_lean_version-$git_hash"
-      - name: upload precompiled mathlib zip file
-        uses: actions/upload-artifact@v1
-        with:
-          name: ${{ steps.setup_precompiled.outputs.artifact_name }}
-          path: ..
+      # - name: upload precompiled mathlib zip file
+      #   uses: actions/upload-artifact@v1
+      #   with:
+      #     name: ${{ steps.setup_precompiled.outputs.artifact_name }}
+      #     path: ..
 
       - name: lint
         # for some reason this gets skipped if an earlier (non-"build") step fails,
@@ -119,10 +119,10 @@ jobs:
           set -o pipefail
           lean --make docs archive roadmap test | cat
 
-      - name: leanchecker
-        run: |
-          lean --recursive --export=mathlib.txt src/
-          leanchecker mathlib.txt
+      # - name: leanchecker
+      #   run: |
+      #     lean --recursive --export=mathlib.txt src/
+      #     leanchecker mathlib.txt
 
       - name: generate docs
         run:
