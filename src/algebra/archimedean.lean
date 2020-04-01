@@ -160,6 +160,7 @@ theorem exists_rat_gt [archimedean α] (x : α) : ∃ q : ℚ, x < q :=
 let ⟨n, h⟩ := exists_nat_gt x in ⟨n, by rwa rat.cast_coe_nat⟩
 /- pr#3
 part 2
+part 3
 -/
 theorem archimedean_iff_rat_lt :
   archimedean α ↔ ∀ x : α, ∃ q : ℚ, x < q :=
