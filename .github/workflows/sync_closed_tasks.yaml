@@ -20,7 +20,9 @@ jobs:
 
       - name: Label 
         uses: actions/github-script@v3
+        env:
+          DATA: ${{ steps.sync.outputs }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            console.log(context.steps.sync.outputs)
+            console.log(process.env.DATA)
