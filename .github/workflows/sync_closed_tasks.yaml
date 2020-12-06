@@ -21,8 +21,12 @@ jobs:
       - name: Label 
         uses: actions/github-script@v3
         env:
-          DATA: ${{ steps.sync.outputs }}
+          MARK_REFERENCES_AS: ${{ steps.sync.outputs.mark_references_as }}
+          REFERENCES: ${{ steps.sync.outputs.references }}
+          UPDATED: ${{ steps.sync.outputs.updated }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            console.log(process.env.DATA)
+            console.log(process.env.MARK_REFERENCES_AS);
+            console.log(process.env.REFERENCES);
+            console.log(process.env.UPDATED);
